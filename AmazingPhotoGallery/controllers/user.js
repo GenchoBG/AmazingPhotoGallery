@@ -40,7 +40,7 @@ module.exports = {
                             console.log(err.message);
                         }
                     });
-                    profilePicPath = "./public/images/profilePictures/" + filename;
+                    profilePicPath = "/images/profilePictures/" + filename;
                     userObject["profilePicture"] = profilePicPath;
                 }
 
@@ -88,5 +88,16 @@ module.exports = {
     logout: (req, res) => {
         req.logOut();
         res.redirect('/');
-    }
+    },
+
+    details: (req, res) => {
+        let user = req.user;
+        if(user){
+            res.render('user/details', user);
+        } else {
+            res.redirect('/user/login');
+        }
+
+    },
+
 };

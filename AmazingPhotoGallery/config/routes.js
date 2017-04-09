@@ -11,5 +11,7 @@ module.exports = (app) => {
     app.post('/user/login', userController.loginPost);
 
     app.get('/user/logout', userController.logout);
+
+    app.get('/user/details', userController.details)
 };
 

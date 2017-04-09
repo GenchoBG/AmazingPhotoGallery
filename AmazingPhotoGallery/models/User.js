@@ -7,7 +7,7 @@ let userSchema = mongoose.Schema(
         passwordHash: {type: String, required: true},
         fullName: {type: String, required: true},
         salt: {type: String, required: true},
-        profilePicture: {type: String, default: "./public/images/profilePictures/defaultProfilePicture.png"}
+        profilePicture: {type: String, default: "/images/profilePictures/defaultProfilePicture.png"}
     }
 );
 
