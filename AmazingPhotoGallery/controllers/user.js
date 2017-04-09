@@ -24,6 +24,17 @@ module.exports = {
                 let salt = encryption.generateSalt();
                 let passwordHash = encryption.hashPassword(registerArgs.password, salt);
 
+                let profilePic = req.files.profilePicture;
+                if(profilePic) {
+                    let filename = registerArgs.email + "ProfilePicture" + profilePic.name;
+
+                    profilePic.mv("./public/images/profilePictures/" + filename, err => {
+                        if(err){
+                            console.log(err.message);
+                        }
+                    });
+                }
+
                 let userObject = {
                     email: registerArgs.email,
                     passwordHash: passwordHash,

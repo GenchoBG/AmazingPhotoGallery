@@ -4,11 +4,15 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const fileUpload = require('express-fileupload');
 
 module.exports = (app, config) => {
     // View engine setup.
     app.set('views', path.join(config.rootFolder, '/views'));
     app.set('view engine', 'hbs');
+
+    // Use express-fileupload to handle multipart form data
+    app.use(fileUpload());
 
     // This set up which is the parser for the request's data.
     app.use(bodyParser.json());
