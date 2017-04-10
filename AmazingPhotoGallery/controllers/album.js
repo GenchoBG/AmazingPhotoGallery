@@ -56,7 +56,7 @@ module.exports = {
         let id = req.params.id;
 
         Album.findById(id).populate("author").populate("photos").then(album => {
-            if(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin)){
+            if (req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin)) {
                 album["hasRights"] = true;
             }
             res.render('album/details', album);
@@ -78,7 +78,7 @@ module.exports = {
 
             let picture = req.files.picture;
 
-            let path = "/images/album/" + album.name + album.photos.length + picture.name ;
+            let path = "/images/album/" + album.name + album.photos.length + picture.name;
 
             picture.mv("./public" + path, err => {
                 if (err) {
@@ -92,7 +92,7 @@ module.exports = {
             Photo.create(photoArgs).then(photo => {
                 album.photos.push(photo.id);
                 album.save(err => {
-                    if(err){
+                    if (err) {
                         console.log(err.message);
                     }
                 })
@@ -102,5 +102,58 @@ module.exports = {
         })
     },
 
+    delete: (req, res) => {
+        let id = req.params.id;
 
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/');
+            }
+        });
+
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            let author = album.author;
+
+            for(let photo of album.photos){
+                console.log(photo.id);
+                Photo.findOneAndRemove({_id: photo.id}).then(photo => {
+                    photo.save();
+                });
+            }
+
+            let index = author.albums.indexOf(album.id);
+
+
+            if (index < 0) {
+                console.log("Error - Album " + album.name + " was not found for author" + author.fullName);
+            } else {
+                author.albums.splice(index, 1);
+                author.save();
+            }
+
+        });
+
+        Album.findOneAndRemove({_id: id}).populate("author").populate("photos").then(user => {
+            res.redirect('/');
+        });
+    },
+
+    editGet: (req, res) => {
+        let id = req.params.id;
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/');
+            } else {
+                res.render('album/edit', album);
+            }
+        });
+
+
+    },
+
+    editPost: (req, res) => {
+
+    }
 };

@@ -22,5 +22,9 @@ module.exports = (app) => {
 
     app.get('/album/addphoto/:id', albumController.addphotoGet);
     app.post('/album/addphoto/:id', albumController.addphotoPost);
+
+    app.get('/album/delete/:id', albumController.delete);
+
+    app.get('/album/edit/:id', albumController.editGet);
 };
 
