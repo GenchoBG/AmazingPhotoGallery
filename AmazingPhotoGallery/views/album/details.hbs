@@ -14,23 +14,25 @@
                 </small>
 
                 {{#each photos}}
-                    <img src="{{path}}" alt="Image"
-                         style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%">
+                    <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                             style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
                 {{/each}}
 
                 <footer>
                     <div class="pull-right">
                         <a class="btn btn-default btn-xs" href="/">Back &raquo;</a>
                     </div>
-                    <div class="pull-right">
-                        <a class="btn btn-success btn-xs" href="/album/addphoto/{{id}}">Add Photo </a>
-                    </div>
-                    <div class="pull-right">
-                        <a class="btn btn-success btn-xs" href="/">Edit Album </a>
-                    </div>
-                    <div class="pull-right">
-                        <a class="btn btn-danger btn-xs" href="/">Delete Album</a>
-                    </div>
+                    {{#if hasRights}}
+                        <div class="pull-right">
+                            <a class="btn btn-success btn-xs" href="/album/addphoto/{{id}}">Add Photo </a>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-success btn-xs" href="/">Edit Album </a>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-danger btn-xs" href="/">Delete Album</a>
+                        </div>
+                    {{/if}}
                 </footer>
             </article>
         </div>

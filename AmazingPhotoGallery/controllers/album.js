@@ -56,6 +56,9 @@ module.exports = {
         let id = req.params.id;
 
         Album.findById(id).populate("author").populate("photos").then(album => {
+            if(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin)){
+                album["hasRights"] = true;
+            }
             res.render('album/details', album);
         })
     },
@@ -98,4 +101,6 @@ module.exports = {
             res.redirect('/album/details/' + album.id);
         })
     },
+
+    
 };

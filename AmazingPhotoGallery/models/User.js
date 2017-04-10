@@ -9,8 +9,8 @@ let userSchema = mongoose.Schema(
         fullName: {type: String, required: true},
         salt: {type: String, required: true},
         profilePicture: {type: String, default: "/images/profilePictures/defaultProfilePicture.png"},
-        albums: [{type: ObjectId, ref: "Album"}]
-
+        albums: [{type: ObjectId, ref: "Album"}],
+        isAdmin: {type: Boolean, default: false}
     }
 );
 
