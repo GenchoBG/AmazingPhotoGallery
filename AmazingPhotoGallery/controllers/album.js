@@ -115,7 +115,7 @@ module.exports = {
         Album.findById(id).populate("author").populate("photos").then(album => {
             let author = album.author;
 
-            for(let photo of album.photos){
+            for (let photo of album.photos) {
                 console.log(photo.id);
                 Photo.findOneAndRemove({_id: photo.id}).then(photo => {
                     photo.save();
@@ -154,6 +154,23 @@ module.exports = {
     },
 
     editPost: (req, res) => {
+        let id = req.params.id;
 
+        let args = req.body;
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin)) {
+                Album.update({_id: id}, {
+                    $set: {
+                        name: args.name,
+                        theme: args.theme,
+                        tags: args.tags
+                    }
+                }).then(updateStatus => {
+                    res.redirect('/album/details/' + id);
+                });
+            }
+            res.redirect('/album/details/' + id);
+        });
     }
 };

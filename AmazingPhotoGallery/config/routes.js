@@ -26,5 +26,6 @@ module.exports = (app) => {
     app.get('/album/delete/:id', albumController.delete);
 
     app.get('/album/edit/:id', albumController.editGet);
+    app.post('/album/edit/:id', albumController.editPost);
 };
 
