@@ -22,6 +22,9 @@ module.exports = {
         });
 
         Album.find({}).populate('author').then(albums => {
+            for (let album of albums){
+
+            }
             res.render('home/index', {albums: albums});
         });
     }

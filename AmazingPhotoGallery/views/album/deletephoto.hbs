@@ -1,0 +1,16 @@
+<div class="container body-content">
+    <div class="row">
+        <div class="col-md-12">
+            {{#each photos}}
+                <div style="margin-bottom: 6pt">
+                    <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                             style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
+                    <a href="/album/deletephoto/{{album}}/{{this.id}}/" class="btn btn-danger">Delete</a>
+                </div>
+            {{/each}}
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-default btn-xs" href="/album/details/{{id}}">Back &raquo;</a>
+        </div>
+    </div>
+</div>

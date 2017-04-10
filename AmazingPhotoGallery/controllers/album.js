@@ -172,5 +172,52 @@ module.exports = {
             }
             res.redirect('/album/details/' + id);
         });
+    },
+
+    deletePhotoGet: (req, res) => {
+        let id = req.params.albumId;
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/');
+            } else {
+                res.render('album/deletephoto', album);
+            }
+        });
+    },
+
+    deletePhoto: (req, res) => {
+        let photoId = req.params.photoId;
+        let albumId = req.params.albumId;
+
+
+        Album.findById(albumId).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/');
+            }
+        });
+        console.log("AI FUKIN DID IT");
+        Album.findById(albumId).populate("photos").then(album => {
+            if (!album) {
+                console.log("WTF");
+            } else {
+                Photo.findById(photoId).populate("author").then(photo => {
+                    let index = album.photos.map(x=>x.id).indexOf(photoId);
+                    if (index > -1) {
+                        Photo.findOneAndRemove({_id: photoId}).populate("album").then(photo => {
+                            photo.save();
+                        });
+                        album.photos.splice(index, 1);
+                        album.save();
+                    } else {
+                        console.log("Index error");
+                        console.log(album.photos);
+                        console.log(photo);
+                        console.log(index);
+                    }
+                });
+            }
+            res.redirect('/album/deletephoto/' + album.id);
+        })
     }
 };
