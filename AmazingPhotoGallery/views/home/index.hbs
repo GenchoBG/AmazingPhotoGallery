@@ -1,0 +1,27 @@
+<div class="container body-content">
+    <div class="row">
+        {{#each albums}}
+            <div class="col-md-6">
+                <article>
+                    <header>
+                        <h2>{{this.name}}</h2>
+                    </header>
+
+                    <p>{{this.theme}}
+                    </p>
+
+                    <small class="author">
+                        {{this.author.fullName}}
+                    </small>
+
+                    <footer>
+                        <div class="pull-right">
+                            <a class="btn btn-default btn-xs" href="/album/details/{{this.id}}">View &raquo;</a>
+                        </div>
+                    </footer>
+                </article>
+            </div>
+        {{/each}}
+    </div>
+</div>
+

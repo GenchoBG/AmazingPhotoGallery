@@ -1,0 +1,38 @@
+<div class="container body-content">
+    <div class="row">
+        <div class="col-md-12">
+            <article>
+                <header>
+                    <h2>{{name}}</h2>
+                </header>
+
+                <p>{{theme}}
+                </p>
+
+                <small class="author">
+                    {{author.fullName}}
+                </small>
+
+                {{#each photos}}
+                    <img src="{{path}}" alt="Image"
+                         style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%">
+                {{/each}}
+
+                <footer>
+                    <div class="pull-right">
+                        <a class="btn btn-default btn-xs" href="/">Back &raquo;</a>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-success btn-xs" href="/album/addphoto/{{id}}">Add Photo </a>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-success btn-xs" href="/">Edit Album </a>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-danger btn-xs" href="/">Delete Album</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,9 @@
+const Album = require('mongoose').model('Album');
+
 module.exports = {
   index: (req, res) => {
-      res.render('home/index');
+      Album.find({}).populate('author').then(albums => {
+          res.render('home/index', {albums: albums});
+      });
   }
 };

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const encryption = require('./../utilities/encryption');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 let userSchema = mongoose.Schema(
     {
@@ -7,7 +8,9 @@ let userSchema = mongoose.Schema(
         passwordHash: {type: String, required: true},
         fullName: {type: String, required: true},
         salt: {type: String, required: true},
-        profilePicture: {type: String, default: "/images/profilePictures/defaultProfilePicture.png"}
+        profilePicture: {type: String, default: "/images/profilePictures/defaultProfilePicture.png"},
+        albums: [{type: ObjectId, ref: "Album"}]
+
     }
 );
 
