@@ -22,10 +22,9 @@ module.exports = {
         });
 
         Album.find({}).populate('author').then(albums => {
-            for (let album of albums){
-
-            }
-            res.render('home/index', {albums: albums});
+            Album.find({}).populate('author').limit(10).sort({'likes': -1}).then(top => {
+                res.render('home/index', {albums: albums, top: top});
+            });
         });
     }
 };

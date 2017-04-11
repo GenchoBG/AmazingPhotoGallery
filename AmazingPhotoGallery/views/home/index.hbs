@@ -1,7 +1,15 @@
 <div class="container body-content">
     <div class="row">
-        <div class="col-md-6">
-            {{#each albums}}
+        <h2>TOP 10 HOTTEST ALBUMS!1!!!12!</h2>
+        <div class="col-md-12">
+            <ul>
+                {{#each top}}
+                    <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
+                {{/each}}
+            </ul>
+        </div>
+        {{#each albums}}
+            <div class="col-md-6">
                 <div>
                     <article>
                         <header>
@@ -22,8 +30,8 @@
                         </footer>
                     </article>
                 </div>
-            {{/each}}
-        </div>
+            </div>
+        {{/each}}
     </div>
 </div>
 
