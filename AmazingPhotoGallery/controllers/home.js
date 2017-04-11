@@ -26,5 +26,22 @@ module.exports = {
                 res.render('home/index', {albums: albums, top: top});
             });
         });
+    },
+    getSearchResults: (req, res) => {
+        let searchtags = req.body.searchtags.split(',');
+        Album.find({}).then(albums => {
+            let returnAlbums = [];
+            for (album of albums){
+                for(tag of searchtags){
+                    if(album.name.includes(tag) || album.tags.includes(tag) || album.theme.includes(tag)){
+                        returnAlbums.push(album);
+                        console.log(album.name);
+                    }
+                }
+            }
+            Album.find({}).populate('author').limit(10).sort({'likes': -1}).then(top => {
+                res.render('home/index', {albums: returnAlbums, top: top});
+            });
+        });
     }
 };
