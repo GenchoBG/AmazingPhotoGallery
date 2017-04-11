@@ -30,14 +30,6 @@ module.exports = {
             return;
         }
 
-
-        //for (let key in yourobject) {
-        //    if (yourobject.hasOwnProperty(key)) {
-        //        console.log(key, yourobject[key]);
-        //    }
-        //}
-
-
         albumArgs["author"] = req.user;
         Album.create(albumArgs).then(album => {
             req.user.albums.push(album.id);
@@ -70,13 +62,27 @@ module.exports = {
     },
 
     addphotoGet: (req, res) => {
-        Album.findById(req.params.id).then(album => {
-            res.render('album/addphoto', album);
+        let id = req.params.id;
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/user/login');
+            } else {
+                Album.findById(req.params.id).then(album => {
+                    res.render('album/addphoto', album);
+                });
+            }
         });
     },
 
     addphotoPost: (req, res) => {
         let id = req.params.id;
+
+        Album.findById(id).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/user/login');
+            }
+        });
 
         Album.findById(id).populate("author").populate("photos").then(album => {
 
@@ -113,35 +119,34 @@ module.exports = {
 
         Album.findById(id).populate("author").populate("photos").then(album => {
             if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
-                res.redirect('/');
-            }
-        });
+                res.redirect('/user/login');
+            } else {
+                Album.findById(id).populate("author").populate("photos").then(album => {
+                    let author = album.author;
+
+                    for (let photo of album.photos) {
+                        console.log(photo.id);
+                        Photo.findOneAndRemove({_id: photo.id}).then(photo => {
+                            photo.save();
+                        });
+                    }
+
+                    let index = author.albums.indexOf(album.id);
 
 
-        Album.findById(id).populate("author").populate("photos").then(album => {
-            let author = album.author;
+                    if (index < 0) {
+                        console.log("Error - Album " + album.name + " was not found for author" + author.fullName);
+                    } else {
+                        author.albums.splice(index, 1);
+                        author.save();
+                    }
 
-            for (let photo of album.photos) {
-                console.log(photo.id);
-                Photo.findOneAndRemove({_id: photo.id}).then(photo => {
-                    photo.save();
+                });
+
+                Album.findOneAndRemove({_id: id}).populate("author").populate("photos").then(user => {
+                    res.redirect('/');
                 });
             }
-
-            let index = author.albums.indexOf(album.id);
-
-
-            if (index < 0) {
-                console.log("Error - Album " + album.name + " was not found for author" + author.fullName);
-            } else {
-                author.albums.splice(index, 1);
-                author.save();
-            }
-
-        });
-
-        Album.findOneAndRemove({_id: id}).populate("author").populate("photos").then(user => {
-            res.redirect('/');
         });
     },
 
@@ -150,13 +155,11 @@ module.exports = {
 
         Album.findById(id).populate("author").populate("photos").then(album => {
             if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
-                res.redirect('/');
+                res.redirect('/user/login');
             } else {
                 res.render('album/edit', album);
             }
         });
-
-
     },
 
     editPost: (req, res) => {
@@ -185,7 +188,7 @@ module.exports = {
 
         Album.findById(id).populate("author").populate("photos").then(album => {
             if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
-                res.redirect('/');
+                res.redirect('/user/login');
             } else {
                 res.render('album/deletephoto', album);
             }
@@ -198,7 +201,7 @@ module.exports = {
 
         Album.findById(albumId).populate("author").populate("photos").then(album => {
             if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
-                res.redirect('/');
+                res.redirect('/user/login');
             }
         });
 
@@ -229,7 +232,7 @@ module.exports = {
         let albumId = req.params.albumId;
 
         Album.findById(albumId).populate("author").populate("photos").then(album => {
-            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+            if (!req.user) {
                 res.redirect('/user/login');
             } else {
                 if (req.user.likedAlbums.indexOf(albumId) == -1) {
@@ -254,7 +257,7 @@ module.exports = {
         let albumId = req.params.albumId;
 
         Album.findById(albumId).populate("author").populate("photos").then(album => {
-            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+            if (!req.user) {
                 res.redirect('/user/login');
             } else {
                 if (req.user.dislikedAlbums.indexOf(albumId) == -1) {

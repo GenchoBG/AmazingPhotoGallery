@@ -3,9 +3,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 let albumSchema = mongoose.Schema(
     {
-        name: {type: String, required: true},
-        theme: {type: String, required: true},
-        tags: {type: String, required: true},
+        name: {type: String, required: true, unique: false},
+        theme: {type: String, required: true, unique: false},
+        tags: {type: String, required: true, unique: false},
         author: {type: ObjectId, required: true, ref: 'User'},
         photos: [{type: ObjectId, ref: "Photo"}],
         likes: {type: Number, default: 0}

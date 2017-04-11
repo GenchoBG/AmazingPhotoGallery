@@ -15,7 +15,7 @@ module.exports = {
                     salt: salt,
                     isAdmin: true
                 };
-                User.create(adminProperties).then(()=> {
+                User.create(adminProperties).then(() => {
                     console.log("Admin created!");
                 });
             }
@@ -28,20 +28,43 @@ module.exports = {
         });
     },
     getSearchResults: (req, res) => {
-        let searchtags = req.body.searchtags.split(',');
-        Album.find({}).then(albums => {
+        let searchtags = req.body.searchtags.split(',').map(x => x.toLowerCase());
+        Album.find({}).populate('author').then(albums => {
             let returnAlbums = [];
-            for (album of albums){
-                for(tag of searchtags){
-                    if(album.name.includes(tag) || album.tags.includes(tag) || album.theme.includes(tag)){
+            for (album of albums) {
+                for (tag of searchtags) {
+                    if (album.name.toLowerCase().includes(tag.toLowerCase()) || album.tags.toLowerCase().includes(tag.toLowerCase()) || album.theme.toLowerCase().includes(tag.toLowerCase())) {
                         returnAlbums.push(album);
-                        console.log(album.name);
+                        break;
                     }
                 }
             }
             Album.find({}).populate('author').limit(10).sort({'likes': -1}).then(top => {
                 res.render('home/index', {albums: returnAlbums, top: top});
             });
+        });
+    },
+
+    getPhotoSearchResults: (req, res) => {
+        let searchtags = req.body.searchtags.split(',').map(x => x.toLowerCase());
+
+        let photos = [];
+
+        Album.find({}).populate('author').populate('photos').then(albums => {
+            for (album of albums) {
+                for (photo of album.photos) {
+                    for (tag of searchtags) {
+                        if (photo.tags.toLowerCase().includes(tag.toLowerCase())) {
+                            photos.push(photo);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        Album.find({}).populate('author').limit(10).sort({'likes': -1}).then(top => {
+            res.render('home/index', {photos: photos, top: top});
         });
     }
 };

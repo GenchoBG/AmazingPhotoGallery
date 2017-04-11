@@ -4,7 +4,9 @@ const albumController = require('./../controllers/album');
 
 module.exports = (app) => {
     app.get('/', homeController.index);
-    app.post('/', homeController.getSearchResults);
+
+    app.post('/searchalbums', homeController.getSearchResults);
+    app.post('/searchphotos', homeController.getPhotoSearchResults);
 
     app.get('/user/register', userController.registerGet);
     app.post('/user/register', userController.registerPost);

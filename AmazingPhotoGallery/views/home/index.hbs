@@ -4,24 +4,42 @@
         <div class="col-md-12">
             <ul>
                 {{#each top}}
-                    <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes/</li>
+                    <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
                 {{/each}}
             </ul>
         </div>
         <div class="col-md-12">
             <div class="well">
-                <form class="form-horizontal" id="bigForm" method="POST" action="/">
+                <h4>Seperate the tags with commas!</h4>
+                <form class="navbar-form" id="albumForm" method="POST" action="/searchalbums">
                     <fieldset>
-                        <legend>Search Album by Tags or Title</legend>
+                        <legend>Search Album by Tags Title or Theme</legend>
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="searchtags">Album Gluposti</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="searchtags" placeholder="Tags (seperate with a comma)" name="searchtags" required >
+                                <input type="text" class="form-control" id="searchtags" placeholder="Tags" name="searchtags" required >
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button type="submit" form="bigForm" class="btn btn-primary">Submit</button>
+                                <button type="submit" form="albumForm" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+                <form class="navbar-form" id="pictureForm" method="POST" action="/searchphotos">
+                    <fieldset>
+                        <legend>Search Picture by Tags</legend>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="searchtags">Picture Gluposti</label>
+                            <div class="col-sm-4 ">
+                                <input type="text" class="form-control" id="searchtags" placeholder="Tags" name="searchtags" required >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <button type="submit" form="pictureForm" class="btn btn-primary">Search</button>
                             </div>
                         </div>
                     </fieldset>
@@ -52,6 +70,10 @@
                     </article>
                 </div>
             </div>
+        {{/each}}
+        {{#each photos}}
+            <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                     style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
         {{/each}}
     </div>
 </div>
