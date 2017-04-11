@@ -10,7 +10,9 @@ let userSchema = mongoose.Schema(
         salt: {type: String, required: true},
         profilePicture: {type: String, default: "/images/profilePictures/defaultProfilePicture.png"},
         albums: [{type: ObjectId, ref: "Album"}],
-        isAdmin: {type: Boolean, default: false}
+        isAdmin: {type: Boolean, default: false},
+        likedAlbums: [{type: ObjectId, ref: "Album"}],
+        dislikedAlbums: [{type: ObjectId, ref: "Album"}]
     }
 );
 

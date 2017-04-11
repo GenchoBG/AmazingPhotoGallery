@@ -30,6 +30,9 @@ module.exports = (app) => {
 
     app.get('/album/deletephoto/:albumId', albumController.deletePhotoGet);
 
+    app.get('/album/like/:albumId', albumController.like);
+    app.get('/album/dislike/:albumId', albumController.dislike);
+
     app.get('/album/deletephoto/:albumId/:photoId', albumController.deletePhoto);
 };
 

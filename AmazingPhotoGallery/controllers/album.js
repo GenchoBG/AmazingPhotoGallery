@@ -59,6 +59,12 @@ module.exports = {
             if (req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin)) {
                 album["hasRights"] = true;
             }
+            if (req.user && req.user.likedAlbums.indexOf(id) == -1) {
+                album["canLike"] = true;
+            }
+            if (req.user && req.user.dislikedAlbums.indexOf(id) == -1) {
+                album["canDislike"] = true;
+            }
             res.render('album/details', album);
         })
     },
@@ -190,19 +196,18 @@ module.exports = {
         let photoId = req.params.photoId;
         let albumId = req.params.albumId;
 
-
         Album.findById(albumId).populate("author").populate("photos").then(album => {
             if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
                 res.redirect('/');
             }
         });
-        console.log("AI FUKIN DID IT");
+
         Album.findById(albumId).populate("photos").then(album => {
             if (!album) {
                 console.log("WTF");
             } else {
                 Photo.findById(photoId).populate("author").then(photo => {
-                    let index = album.photos.map(x=>x.id).indexOf(photoId);
+                    let index = album.photos.map(x => x.id).indexOf(photoId);
                     if (index > -1) {
                         Photo.findOneAndRemove({_id: photoId}).populate("album").then(photo => {
                             photo.save();
@@ -219,5 +224,56 @@ module.exports = {
             }
             res.redirect('/album/deletephoto/' + album.id);
         })
+    },
+    like: (req, res) => {
+        let albumId = req.params.albumId;
+
+        Album.findById(albumId).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/user/login');
+            } else {
+                if (req.user.likedAlbums.indexOf(albumId) == -1) {
+                    req.user.likedAlbums.push(albumId);
+                    let indexOfDisliked = req.user.dislikedAlbums.indexOf(albumId);
+                    if (indexOfDisliked > -1) {
+                        req.user.dislikedAlbums.splice(indexOfDisliked, 1);
+                        album.likes += 1;
+                    }
+                    req.user.save();
+
+                    album.likes += 1;
+                    album.save();
+
+                }
+                res.redirect('/album/details/' + albumId);
+            }
+        });
+
+    },
+    dislike: (req, res) => {
+        let albumId = req.params.albumId;
+
+        Album.findById(albumId).populate("author").populate("photos").then(album => {
+            if (!(req.user && (req.user.albums.indexOf(album.id) > -1 || req.user.isAdmin))) {
+                res.redirect('/user/login');
+            } else {
+                if (req.user.dislikedAlbums.indexOf(albumId) == -1) {
+                    req.user.dislikedAlbums.push(albumId);
+
+                    let indexOfliked = req.user.likedAlbums.indexOf(albumId);
+                    if (indexOfliked > -1) {
+                        req.user.likedAlbums.splice(indexOfliked, 1);
+                        album.likes -= 1;
+                    }
+                    req.user.save();
+
+                    album.likes -= 1;
+                    album.save();
+
+                }
+                res.redirect('/album/details/' + albumId);
+            }
+        });
+
     }
 };

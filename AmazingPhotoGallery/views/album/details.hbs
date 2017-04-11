@@ -36,6 +36,16 @@
                             <a class="btn btn-danger btn-xs" href="/album/delete/{{id}}">Delete Album</a>
                         </div>
                     {{/if}}
+                    {{#if canLike}}
+                        <div class="pull-right">
+                            <a class="btn btn-success btn-xs" href="/album/like/{{id}}">Like</a>
+                        </div>
+                    {{/if}}
+                    {{#if canDislike}}
+                        <div class="pull-right">
+                            <a class="btn btn-danger btn-xs" href="/album/dislike/{{id}}">Dislike</a>
+                        </div>
+                    {{/if}}
                 </footer>
             </article>
         </div>
