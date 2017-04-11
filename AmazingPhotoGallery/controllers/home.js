@@ -28,7 +28,7 @@ module.exports = {
         });
     },
     getSearchResults: (req, res) => {
-        let searchtags = req.body.searchtags.split(',').map(x => x.toLowerCase());
+        let searchtags = req.body.searchtags.split(/[\s,]/).map(x => x.toLowerCase());
         Album.find({}).populate('author').then(albums => {
             let returnAlbums = [];
             for (album of albums) {
@@ -46,7 +46,7 @@ module.exports = {
     },
 
     getPhotoSearchResults: (req, res) => {
-        let searchtags = req.body.searchtags.split(',').map(x => x.toLowerCase());
+        let searchtags = req.body.searchtags.split(/[\s,]/).map(x => x.toLowerCase());
 
         let photos = [];
 

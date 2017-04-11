@@ -17,7 +17,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label" for="searchtags">Album Gluposti</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="searchtags" placeholder="Tags" name="searchtags" required >
+                                <input type="text" class="form-control" id="searchtags" placeholder="Tags"
+                                       name="searchtags" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -30,11 +31,12 @@
                 </form>
                 <form class="navbar-form" id="pictureForm" method="POST" action="/searchphotos">
                     <fieldset>
-                        <legend>Search Picture by Tags</legend>
+                        <legend>Search Photo by Tags</legend>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label" for="searchtags">Picture Gluposti</label>
+                            <label class="col-sm-4 control-label" for="searchtags">Photo Gluposti</label>
                             <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="searchtags" placeholder="Tags" name="searchtags" required >
+                                <input type="text" class="form-control" id="searchtags" placeholder="Tags"
+                                       name="searchtags" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -46,7 +48,9 @@
                 </form>
             </div>
         </div>
-        <h2>All albums</h2>
+        {{#if albums}}
+            <h2>All albums</h2>
+        {{/if}}
         {{#each albums}}
             <div class="col-md-6">
                 <div>
@@ -71,10 +75,15 @@
                 </div>
             </div>
         {{/each}}
-        {{#each photos}}
-            <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                     style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
-        {{/each}}
+        {{#if photos}}
+            <h2>All photos</h2>
+            <div id="photos">
+                {{#each photos}}
+                    <a href="{{path}}" id download="image"><img src="{{path}}" alt="Image"
+                                                                style="border: 1px solid black; border-radius: 15%"></a>
+                {{/each}}
+            </div>
+        {{/if}}
     </div>
 </div>
 
