@@ -13,22 +13,20 @@
                     {{author.fullName}}
                 </small>
 
+                {{#if photos}}
+                    <h4>Click on any photo to download it</h4>
+                {{/if}}
+                {{#unless photos}}
+                    <h4>No photos</h4>
+                {{/unless}}
+
                 <div id="photos">
                     {{#each photos}}
                         <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                                 style="border: 1px solid black; border-radius: 15%"></a>
+                                                                 style="height: 200px;border: 1px solid black; border-radius: 15%"></a>
                     {{/each}}
                 </div>
 
-                <script>
-                    let images = document.getElementById('photos').getElementsByTagName('img');
-                    for (let img of images){
-                        while(img.height > 250){
-                            img.width*=0.95;
-                            img.height*=0.95;
-                        }
-                    }
-                </script>
 
                 <footer>
                     <div class="pull-right">
