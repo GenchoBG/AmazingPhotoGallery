@@ -2,8 +2,15 @@
     <div class="row">
         <div class="col-md-12">
             <h1>{{fullName}}</h1>
-            <img src="{{profilePicture}}" alt="Image"
-                 style="width: 300px; height: 300px; border: 1px solid black; border-radius: 15%">
+            <img id="profilepicture" src="{{profilePicture}}" alt="Image"
+                 style="border: 1px solid black; border-radius: 15%">
+            <script>
+                var img = document.getElementById("profilepicture");
+                while (img.height>300){
+                    img.height*=0.95;
+                    img.width*=0.95;
+                }
+            </script>
         </div>
     </div>
 </div>

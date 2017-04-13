@@ -55,10 +55,10 @@
                 jQuery(function($) {
                     // Consider adding an ID to your table
                     // incase a second table ever enters the picture.
-                    var items = $("#albums .col-md-6 #albuminfo");
+                    var items = $("#albums .col-md-6 .albuminfo");
 
                     var numItems = items.length;
-                    var perPage = 6;
+                    var perPage = 2;
 
                     // Only show the first 2 (or first `per_page`) items initially.
                     items.slice(perPage).hide();
@@ -81,8 +81,6 @@
                                     .slice(showFrom, showTo).show();
                         }
                     });
-
-
 
                     // EDIT: Let's cover URL fragments (i.e. #page-3 in the URL).
                     // More thoroughly explained (including the regular expression) in:
@@ -111,8 +109,6 @@
                     // (which is right now).
                     checkFragment();
 
-
-
                 });
             </script>
 
@@ -121,7 +117,7 @@
             <div id="albums">
                 {{#each albums}}
                     <div class="col-md-6">
-                        <div id="albuminfo">
+                        <div class="albuminfo">
                             <article>
                                 <header>
                                     <h2>{{this.name}}</h2>
@@ -150,10 +146,19 @@
             <h2>All photos</h2>
             <div id="photos">
                 {{#each photos}}
-                    <a href="{{path}}" id download="image"><img src="{{path}}" alt="Image"
-                                                                style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
+                    <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                                style="border: 1px solid black; border-radius: 15%"></a>
                 {{/each}}
             </div>
+            <script>
+                let images = document.getElementById('photos').getElementsByTagName('img');
+                for (let img of images){
+                    while(img.height > 250){
+                        img.width*=0.95;
+                        img.height*=0.95;
+                    }
+                }
+            </script>
         {{/if}}
     </div>
 </div>

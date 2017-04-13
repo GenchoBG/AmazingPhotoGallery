@@ -13,10 +13,22 @@
                     {{author.fullName}}
                 </small>
 
-                {{#each photos}}
-                    <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                             style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
-                {{/each}}
+                <div id="photos">
+                    {{#each photos}}
+                        <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                                 style="border: 1px solid black; border-radius: 15%"></a>
+                    {{/each}}
+                </div>
+
+                <script>
+                    let images = document.getElementById('photos').getElementsByTagName('img');
+                    for (let img of images){
+                        while(img.height > 250){
+                            img.width*=0.95;
+                            img.height*=0.95;
+                        }
+                    }
+                </script>
 
                 <footer>
                     <div class="pull-right">
