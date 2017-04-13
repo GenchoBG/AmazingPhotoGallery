@@ -50,40 +50,112 @@
         </div>
         {{#if albums}}
             <h2>All albums</h2>
-        {{/if}}
-        {{#each albums}}
-            <div class="col-md-6">
-                <div>
-                    <article>
-                        <header>
-                            <h2>{{this.name}}</h2>
-                        </header>
 
-                        <p>{{this.theme}}
-                        </p>
+            <script>
+                jQuery(function($) {
+                    // Consider adding an ID to your table
+                    // incase a second table ever enters the picture.
+                    var items = $("#albums .col-md-6 #albuminfo");
 
-                        <small class="author">
-                            {{this.author.fullName}}
-                        </small>
+                    var numItems = items.length;
+                    var perPage = 6;
 
-                        <footer>
-                            <div class="pull-right">
-                                <a class="btn btn-default btn-xs" href="/album/details/{{this.id}}">View &raquo;</a>
-                            </div>
-                        </footer>
-                    </article>
-                </div>
+                    // Only show the first 2 (or first `per_page`) items initially.
+                    items.slice(perPage).hide();
+
+                    // Now setup the pagination using the `.pagination-page` div.
+                    $("#pagination").pagination({
+                        items: numItems,
+                        itemsOnPage: perPage,
+                        cssStyle: "dark-theme",
+
+                        // This is the actual page changing functionality.
+                        onPageClick: function(pageNumber) {
+                            // We need to show and hide `tr`s appropriately.
+                            var showFrom = perPage * (pageNumber - 1);
+                            var showTo = showFrom + perPage;
+
+                            // We'll first hide everything...
+                            items.hide()
+                            // ... and then only show the appropriate rows.
+                                    .slice(showFrom, showTo).show();
+                        }
+                    });
+
+
+
+                    // EDIT: Let's cover URL fragments (i.e. #page-3 in the URL).
+                    // More thoroughly explained (including the regular expression) in:
+                    // https://github.com/bilalakil/bin/tree/master/simplepagination/page-fragment/index.html
+
+                    // We'll create a function to check the URL fragment
+                    // and trigger a change of page accordingly.
+                    function checkFragment() {
+                        // If there's no hash, treat it like page 1.
+                        var hash = window.location.hash || "#page-1";
+
+                        // We'll use a regular expression to check the hash string.
+                        hash = hash.match(/^#page-(\d+)$/);
+
+                        if(hash) {
+                            // The `selectPage` function is described in the documentation.
+                            // We've captured the page number in a regex group: `(\d+)`.
+                            $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+                        }
+                    };
+
+                    // We'll call this function whenever back/forward is pressed...
+                    $(window).bind("popstate", checkFragment);
+
+                    // ... and we'll also call it when the page has loaded
+                    // (which is right now).
+                    checkFragment();
+
+
+
+                });
+            </script>
+
+            <div id="pagination" class="dark-theme simple-pagination"></div>
+
+            <div id="albums">
+                {{#each albums}}
+                    <div class="col-md-6">
+                        <div id="albuminfo">
+                            <article>
+                                <header>
+                                    <h2>{{this.name}}</h2>
+                                </header>
+
+                                <p>{{this.theme}}
+                                </p>
+
+                                <small class="author">
+                                    {{this.author.fullName}}
+                                </small>
+
+                                <footer>
+                                    <div class="pull-right">
+                                        <a class="btn btn-default btn-xs"
+                                           href="/album/details/{{this.id}}">View &raquo;</a>
+                                    </div>
+                                </footer>
+                            </article>
+                        </div>
+                    </div>
+                {{/each}}
             </div>
-        {{/each}}
+        {{/if}}
         {{#if photos}}
             <h2>All photos</h2>
             <div id="photos">
                 {{#each photos}}
                     <a href="{{path}}" id download="image"><img src="{{path}}" alt="Image"
-                                                                style="border: 1px solid black; border-radius: 15%"></a>
+                                                                style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
                 {{/each}}
             </div>
         {{/if}}
     </div>
 </div>
+
 
