@@ -64,7 +64,7 @@ module.exports = {
         });
 
         Album.find({}).populate('author').limit(10).sort({'likes': -1}).then(top => {
-            res.render('home/index', {photos: photos, top: top});
+            res.render('home/index', {photos: photos, top: top, searchedforphotos: true});
         });
     }
 };
