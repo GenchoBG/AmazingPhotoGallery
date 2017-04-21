@@ -1,13 +1,18 @@
 <div class="container body-content">
     <div class="row">
-        <h2>TOP 10 HOTTEST ALBUMS!1!!!12!</h2>
-        <div class="col-md-12">
-            <ul>
-                {{#each top}}
-                    <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
-                {{/each}}
-            </ul>
-        </div>
+        <h2>TOP 10 RATED ALBUMS!</h2>
+        {{#if top}}
+            <div class="col-md-12">
+                <ul>
+                    {{#each top}}
+                        <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+        {{#unless top}}
+            <h3>No albums :(</h3>
+        {{/unless}}
         <div class="col-md-12">
             <div class="well">
                 <h4>Seperate the tags with commas!</h4>
@@ -48,6 +53,11 @@
                 </form>
             </div>
         </div>
+        {{#unless albums}}
+            {{#unless searchedforphotos}}
+                <h2>No albums :(</h2>
+            {{/unless}}
+        {{/unless}}
         {{#if albums}}
             <h2>All albums</h2>
 
@@ -58,7 +68,7 @@
                     var items = $("#albums .col-md-6 .albuminfo");
 
                     var numItems = items.length;
-                    var perPage = 2;
+                    var perPage = 6;
 
                     // Only show the first 2 (or first `per_page`) items initially.
                     items.slice(perPage).hide();

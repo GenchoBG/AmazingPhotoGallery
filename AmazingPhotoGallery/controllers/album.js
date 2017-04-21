@@ -90,25 +90,28 @@ module.exports = {
 
             let picture = req.files.picture;
 
-            let path = "/images/album/" + album.name + album.photos.length + picture.name;
+            if(picture.mimetype.includes("image")){
+                let path = "/images/album/" + album.name + album.photos.length + picture.name;
 
-            picture.mv("./public" + path, err => {
-                if (err) {
-                    console.log(err.message);
-                }
-            });
 
-            photoArgs["path"] = path;
-            photoArgs["album"] = album.id;
-
-            Photo.create(photoArgs).then(photo => {
-                album.photos.push(photo.id);
-                album.save(err => {
+                picture.mv("./public" + path, err => {
                     if (err) {
                         console.log(err.message);
                     }
-                })
-            });
+                });
+
+                photoArgs["path"] = path;
+                photoArgs["album"] = album.id;
+
+                Photo.create(photoArgs).then(photo => {
+                    album.photos.push(photo.id);
+                    album.save(err => {
+                        if (err) {
+                            console.log(err.message);
+                        }
+                    })
+                });
+            }
 
             res.redirect('/album/details/' + album.id);
         })

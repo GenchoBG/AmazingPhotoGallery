@@ -33,7 +33,7 @@ module.exports = {
 
                 let profilePicPath = "";
                 let profilePic = req.files.profilePicture;
-                if(profilePic) {
+                if(profilePic && profilePic.mimetype.includes("image")) {
                     let filename = registerArgs.email + "ProfilePicture" + profilePic.name;
                     profilePic.mv("./public/images/profilePictures/" + filename, err => {
                         if(err){
