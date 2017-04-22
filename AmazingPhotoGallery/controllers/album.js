@@ -281,5 +281,31 @@ module.exports = {
             }
         });
 
+    },
+
+    myAlbums: (req, res) => {
+        let user = req.user;
+
+        if(user){
+            let albums = [];
+            for (albumid of user.albums){
+                Album.findById(albumid).populate('author').then(album => {
+                    if(album) {
+                        albums.push(album);
+                    }
+                })
+            }
+            let likedAlbums = [];
+            for (albumid of user.likedAlbums){
+                Album.findById(albumid).populate('author').then(album => {
+                    if(album) {
+                        likedAlbums.push(album);
+                    }
+                })
+            }
+            res.render('album/myalbums', {albums: albums, likedAlbums: likedAlbums});
+        } else {
+            res.redirect('/user/login');
+        }
     }
 };

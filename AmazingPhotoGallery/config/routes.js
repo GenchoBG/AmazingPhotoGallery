@@ -37,5 +37,7 @@ module.exports = (app) => {
     app.get('/album/dislike/:albumId', albumController.dislike);
 
     app.get('/album/deletephoto/:albumId/:photoId', albumController.deletePhoto);
+
+    app.get('/album/myalbums', albumController.myAlbums);
 };
 

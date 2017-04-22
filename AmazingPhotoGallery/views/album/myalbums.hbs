@@ -1,0 +1,76 @@
+<div class="container body-content">
+    <div class="row">
+        {{#if albums}}
+
+            <h1>My albums</h1>
+
+            <div id="albums">
+                {{#each albums}}
+                    <div class="col-md-6">
+                        <div class="albuminfo">
+                            <article>
+                                <header>
+                                    <h2>{{name}}</h2>
+                                </header>
+
+                                <p>{{theme}}
+                                </p>
+
+                                <small class="author">
+                                    {{author.fullName}}
+                                </small>
+
+                                <footer>
+                                    <div class="pull-right">
+                                        <a class="btn btn-default btn-xs"
+                                           href="/album/details/{{id}}">View &raquo;</a>
+                                    </div>
+                                </footer>
+                            </article>
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
+        {{/if}}
+        {{#unless albums}}
+            <h2>You don't have any albums :(</h2>
+        {{/unless}}
+    </div>
+    <div class="row">
+        {{#if likedAlbums}}
+
+            <h1>Liked Albums</h1>
+            {{#each likedAlbums}}
+
+                <div class="col-md-6">
+                    <div class="albuminfo">
+                        <article>
+                            <header>
+                                <h2>{{name}}</h2>
+                            </header>
+
+                            <p>{{theme}}
+                            </p>
+
+                            <small class="author">
+                                {{author.fullName}}
+                            </small>
+
+                            <footer>
+                                <div class="pull-right">
+                                    <a class="btn btn-default btn-xs"
+                                       href="/album/details/{{id}}">View &raquo;</a>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                </div>
+            {{/each}}
+        {{/if}}
+        {{#unless likedAlbums}}
+            <h2>You haven't liked any albums :(</h2>
+        {{/unless}}
+    </div>
+</div>
+
+
