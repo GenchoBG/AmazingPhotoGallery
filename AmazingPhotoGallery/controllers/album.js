@@ -295,6 +295,16 @@ module.exports = {
                     }
                 })
             }
+            res.render('album/myalbums', {albums: albums});
+        } else {
+            res.redirect('/user/login');
+        }
+    },
+
+    likedAlbums: (req, res) => {
+        let user = req.user;
+
+        if(user){
             let likedAlbums = [];
             for (albumid of user.likedAlbums){
                 Album.findById(albumid).populate('author').then(album => {
@@ -303,7 +313,7 @@ module.exports = {
                     }
                 })
             }
-            res.render('album/myalbums', {albums: albums, likedAlbums: likedAlbums});
+            res.render('album/likedalbums', {likedAlbums: likedAlbums});
         } else {
             res.redirect('/user/login');
         }

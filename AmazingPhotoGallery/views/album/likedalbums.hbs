@@ -1,12 +1,10 @@
 <div class="container body-content">
     <div class="row">
-
-        {{#if albums}}
-
-            <h1>My albums</h1>
+        {{#if likedAlbums}}
+            <h1>Liked albums</h1>
             <div id="pagination" class="dark-theme simple-pagination"></div>
             <div id="albums">
-                {{#each albums}}
+                {{#each likedAlbums}}
                     <div class="col-md-6">
                         <div class="albuminfo">
                             <article>
@@ -33,13 +31,13 @@
                 {{/each}}
             </div>
         {{/if}}
-        {{#unless albums}}
+        {{#unless likedAlbums}}
             <h2>You don't have any albums :(</h2>
         {{/unless}}
 
     </div>
     <div class="row">
-        <a href="/album/likedalbums" class="btn btn-primary pull-left" style="margin-top: 20px;">Liked albums</a>
+        <a href="/album/myalbums" class="btn btn-primary pull-left" style="margin-top: 20px;">My albums</a>
     </div>
 
 </div>

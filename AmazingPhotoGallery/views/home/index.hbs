@@ -1,132 +1,70 @@
 <div class="container body-content">
     <div class="row">
-        <h2>TOP 10 RATED ALBUMS!</h2>
-        {{#if top}}
-            <div class="col-md-12">
-                <ul>
-                    {{#each top}}
-                        <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
-                    {{/each}}
-                </ul>
-            </div>
-        {{/if}}
-        {{#unless top}}
-            <h3>No albums :(</h3>
-        {{/unless}}
-        <div class="col-md-12">
-            <div class="well">
-                <h4>Seperate the tags with commas!</h4>
-                <form class="navbar-form" id="albumForm" method="POST" action="/searchalbums">
+        <div class="row well" style="margin-bottom: 0px">
+            <h4 style="margin-top: 0px">TOP 10 RATED ALBUMS!</h4>
+            {{#if top}}
+                <div class="col-md-6 ">
+                    <ul>
+                        {{#each top}}
+                            <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
+                        {{/each}}
+                    </ul>
+                </div>
+            {{/if}}
+            {{#unless top}}
+                <h3>No albums :(</h3>
+            {{/unless}}
+            <div class="col-md-6">
+                <form class="form-horizontal" id="albumForm" method="POST" action="/searchalbums">
                     <fieldset>
                         <legend>Search Album by Tags Title or Theme</legend>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="searchtags">Album Gluposti</label>
-                            <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="searchtags" placeholder="Tags"
-                                       name="searchtags" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-4">
-                                <button type="submit" form="albumForm" class="btn btn-primary">Search</button>
-                            </div>
-                        </div>
+
+                        <label class="col-sm-4 control-label" for="searchtags">Album Keywords</label>
+
+                        <input type="text" style="display: inline-block" class="form-control" id="searchtags"
+                               placeholder="Keywords"
+                               name="searchtags" required>
+                        <button type="submit" form="albumForm" class="btn btn-primary">Search</button>
 
                     </fieldset>
                 </form>
-                <form class="navbar-form" id="pictureForm" method="POST" action="/searchphotos">
+                <form class="form-horizontal" id="pictureForm" method="POST" action="/searchphotos">
                     <fieldset>
                         <legend>Search Photo by Tags</legend>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="searchtags">Photo Gluposti</label>
-                            <div class="col-sm-4 ">
-                                <input type="text" class="form-control" id="searchtags" placeholder="Tags"
-                                       name="searchtags" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-4">
-                                <button type="submit" form="pictureForm" class="btn btn-primary">Search</button>
-                            </div>
-                        </div>
+
+                        <label class="col-sm-4 control-label" for="searchtags">Photo Keywords</label>
+
+                        <input type="text" style="display: inline-block" class="form-control" id="searchtags"
+                               placeholder="Keywords"
+                               name="searchtags" required>
+
+
+                        <button type="submit" form="pictureForm" class="btn btn-primary">Search</button>
+
+
                     </fieldset>
                 </form>
             </div>
         </div>
+
+    </div>
+    <div class="row">
         {{#unless albums}}
             {{#unless searchedforphotos}}
                 <h2>No albums :(</h2>
             {{/unless}}
         {{/unless}}
         {{#if albums}}
+
+
+
             <h2>All albums</h2>
-
-            <script>
-                jQuery(function($) {
-                    // Consider adding an ID to your table
-                    // incase a second table ever enters the picture.
-                    var items = $("#albums .col-md-6 .albuminfo");
-
-                    var numItems = items.length;
-                    var perPage = 6;
-
-                    // Only show the first 2 (or first `per_page`) items initially.
-                    items.slice(perPage).hide();
-
-                    // Now setup the pagination using the `.pagination-page` div.
-                    $("#pagination").pagination({
-                        items: numItems,
-                        itemsOnPage: perPage,
-                        cssStyle: "dark-theme",
-
-                        // This is the actual page changing functionality.
-                        onPageClick: function(pageNumber) {
-                            // We need to show and hide `tr`s appropriately.
-                            var showFrom = perPage * (pageNumber - 1);
-                            var showTo = showFrom + perPage;
-
-                            // We'll first hide everything...
-                            items.hide()
-                            // ... and then only show the appropriate rows.
-                                    .slice(showFrom, showTo).show();
-                        }
-                    });
-
-                    // EDIT: Let's cover URL fragments (i.e. #page-3 in the URL).
-                    // More thoroughly explained (including the regular expression) in:
-                    // https://github.com/bilalakil/bin/tree/master/simplepagination/page-fragment/index.html
-
-                    // We'll create a function to check the URL fragment
-                    // and trigger a change of page accordingly.
-                    function checkFragment() {
-                        // If there's no hash, treat it like page 1.
-                        var hash = window.location.hash || "#page-1";
-
-                        // We'll use a regular expression to check the hash string.
-                        hash = hash.match(/^#page-(\d+)$/);
-
-                        if(hash) {
-                            // The `selectPage` function is described in the documentation.
-                            // We've captured the page number in a regex group: `(\d+)`.
-                            $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
-                        }
-                    };
-
-                    // We'll call this function whenever back/forward is pressed...
-                    $(window).bind("popstate", checkFragment);
-
-                    // ... and we'll also call it when the page has loaded
-                    // (which is right now).
-                    checkFragment();
-
-                });
-            </script>
 
             <div id="pagination" class="dark-theme simple-pagination"></div>
 
             <div id="albums">
                 {{#each albums}}
-                    <div class="col-md-6">
+                    <div class="col-md-6" ->
                         <div class="albuminfo">
                             <article>
                                 <header>
@@ -142,7 +80,8 @@
 
                                 <footer>
                                     <div class="pull-right">
-                                        <a class="btn btn-default btn-xs"
+
+                                        <a class="btn btn-default btn-sm"
                                            href="/album/details/{{this.id}}">View &raquo;</a>
                                     </div>
                                 </footer>
@@ -157,7 +96,7 @@
             <div id="photos">
                 {{#each photos}}
                     <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                                style="height: 200px;;border: 1px solid black; border-radius: 15%"></a>
+                                                             style="height: 200px;;border: 1px solid black; border-radius: 15%"></a>
                 {{/each}}
             </div>
         {{/if}}
@@ -167,6 +106,67 @@
             {{/if}}
         {{/unless}}
     </div>
+
 </div>
 
 
+<script>
+    jQuery(function ($) {
+        // Consider adding an ID to your table
+        // incase a second table ever enters the picture.
+        var items = $("#albums .col-md-6 .albuminfo");
+
+        var numItems = items.length;
+        var perPage = 6;
+
+        // Only show the first 2 (or first `per_page`) items initially.
+        items.slice(perPage).hide();
+
+        // Now setup the pagination using the `.pagination-page` div.
+        $("#pagination").pagination({
+            items: numItems,
+            itemsOnPage: perPage,
+            cssStyle: "dark-theme",
+
+            // This is the actual page changing functionality.
+            onPageClick: function (pageNumber) {
+                // We need to show and hide `tr`s appropriately.
+                var showFrom = perPage * (pageNumber - 1);
+                var showTo = showFrom + perPage;
+
+                // We'll first hide everything...
+                items.hide()
+                // ... and then only show the appropriate rows.
+                        .slice(showFrom, showTo).show();
+            }
+        });
+
+        // EDIT: Let's cover URL fragments (i.e. #page-3 in the URL).
+        // More thoroughly explained (including the regular expression) in:
+        // https://github.com/bilalakil/bin/tree/master/simplepagination/page-fragment/index.html
+
+        // We'll create a function to check the URL fragment
+        // and trigger a change of page accordingly.
+        function checkFragment() {
+            // If there's no hash, treat it like page 1.
+            var hash = window.location.hash || "#page-1";
+
+            // We'll use a regular expression to check the hash string.
+            hash = hash.match(/^#page-(\d+)$/);
+
+            if (hash) {
+                // The `selectPage` function is described in the documentation.
+                // We've captured the page number in a regex group: `(\d+)`.
+                $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
+            }
+        };
+
+        // We'll call this function whenever back/forward is pressed...
+        $(window).bind("popstate", checkFragment);
+
+        // ... and we'll also call it when the page has loaded
+        // (which is right now).
+        checkFragment();
+
+    });
+</script>
