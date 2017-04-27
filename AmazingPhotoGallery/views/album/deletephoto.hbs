@@ -4,7 +4,7 @@
             {{#each photos}}
                 <div style="margin-bottom: 6pt">
                     <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                             style="width: 150px; height: 150px; border: 1px solid black; border-radius: 15%"></a>
+                                                             style="width: 150px; border: 1px solid black; border-radius: 15%"></a>
                     <a href="/album/deletephoto/{{album}}/{{this.id}}/" class="btn btn-danger">Delete</a>
                 </div>
             {{/each}}

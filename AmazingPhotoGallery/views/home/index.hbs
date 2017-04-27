@@ -1,111 +1,90 @@
 <div class="container body-content">
     <div class="row">
-        <div class="row well" style="margin-bottom: 0px">
-            <h4 style="margin-top: 0px">TOP 10 RATED ALBUMS!</h4>
-            {{#if top}}
-                <div class="col-md-6 ">
+
+        <div class="col-md-4">
+            <div class="well" style="margin-bottom: 0px" id="topneshta">
+                <h4 style="margin-top: 0px" class="text-center">TOP 10 RATED ALBUMS!</h4>
+                {{#if top}}
                     <ul>
                         {{#each top}}
                             <li><a href="album/details/{{this.id}}">{{this.name}}</a> - {{this.likes}} likes</li>
                         {{/each}}
                     </ul>
+                {{/if}}
+                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Search
+                </button>
+                {{#unless top}}
+                    <h3>No albums :(</h3>
+                {{/unless}}
+
+            </div>
+        </div>
+        <div class="col-md-8">
+
+            {{#unless albums}}
+                {{#unless searchedforphotos}}
+                    <h2>No albums :(</h2>
+                {{/unless}}
+            {{/unless}}
+            {{#if albums}}
+
+                <div id="vsemietaqbechovek">
+                    <h1 class="text-center" style="font-size: 60px; margin-bottom: 20px; font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;">All albums</h1>
+                    <div style="margin-left: 40%" id="pagination" class="dark-theme simple-pagination"></div>
+
+
+                    <div id="albums">
+                        {{#each albums}}
+                            <div class="col-md-12">
+                                <div style="border-top: 1px solid darkgray; margin-top: 10px;" class="albuminfo">
+                                    <article>
+                                        <header>
+                                            <h1>{{this.name}}</h1>
+                                        </header>
+
+                                        <p>Theme: {{this.theme}}
+                                        </p>
+
+                                        <small class="author"> Made by
+                                            {{this.author.fullName}}
+                                        </small>
+
+                                        <footer>
+                                            <div class="pull-right">
+
+                                                <a class="btn btn-default btn-sm"
+                                                   href="/album/details/{{this.id}}">View &raquo;</a>
+                                            </div>
+                                        </footer>
+                                    </article>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+
+
+
+            {{/if}}
+            {{#if photos}}
+                <h2>Click on any photo to download it</h2>
+                <div id="photos">
+                    {{#each photos}}
+                        <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
+                                                                 style="height: 200px;border: 1px solid black; border-radius: 15%"></a>
+                    {{/each}}
                 </div>
             {{/if}}
-            {{#unless top}}
-                <h3>No albums :(</h3>
+            {{#unless photos}}
+                {{#if searchedforphotos}}
+                    <h2>No photos found :(</h2>
+                {{/if}}
             {{/unless}}
-            <div class="col-md-6">
-                <form class="form-horizontal" id="albumForm" method="POST" action="/searchalbums">
-                    <fieldset>
-                        <legend>Search Album by Tags Title or Theme</legend>
 
-                        <label class="col-sm-4 control-label" for="searchtags">Album Keywords</label>
-
-                        <input type="text" style="display: inline-block" class="form-control" id="searchtags"
-                               placeholder="Keywords"
-                               name="searchtags" required>
-                        <button type="submit" form="albumForm" class="btn btn-primary">Search</button>
-
-                    </fieldset>
-                </form>
-                <form class="form-horizontal" id="pictureForm" method="POST" action="/searchphotos">
-                    <fieldset>
-                        <legend>Search Photo by Tags</legend>
-
-                        <label class="col-sm-4 control-label" for="searchtags">Photo Keywords</label>
-
-                        <input type="text" style="display: inline-block" class="form-control" id="searchtags"
-                               placeholder="Keywords"
-                               name="searchtags" required>
-
-
-                        <button type="submit" form="pictureForm" class="btn btn-primary">Search</button>
-
-
-                    </fieldset>
-                </form>
-            </div>
         </div>
 
     </div>
-    <div class="row">
-        {{#unless albums}}
-            {{#unless searchedforphotos}}
-                <h2>No albums :(</h2>
-            {{/unless}}
-        {{/unless}}
-        {{#if albums}}
 
-
-
-            <h2>All albums</h2>
-
-            <div id="pagination" class="dark-theme simple-pagination"></div>
-
-            <div id="albums">
-                {{#each albums}}
-                    <div class="col-md-6" ->
-                        <div class="albuminfo">
-                            <article>
-                                <header>
-                                    <h2>{{this.name}}</h2>
-                                </header>
-
-                                <p>{{this.theme}}
-                                </p>
-
-                                <small class="author">
-                                    {{this.author.fullName}}
-                                </small>
-
-                                <footer>
-                                    <div class="pull-right">
-
-                                        <a class="btn btn-default btn-sm"
-                                           href="/album/details/{{this.id}}">View &raquo;</a>
-                                    </div>
-                                </footer>
-                            </article>
-                        </div>
-                    </div>
-                {{/each}}
-            </div>
-        {{/if}}
-        {{#if photos}}
-            <h2>Click on any photo to download it</h2>
-            <div id="photos">
-                {{#each photos}}
-                    <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                             style="height: 200px;;border: 1px solid black; border-radius: 15%"></a>
-                {{/each}}
-            </div>
-        {{/if}}
-        {{#unless photos}}
-            {{#if searchedforphotos}}
-                <h2>No photos found :(</h2>
-            {{/if}}
-        {{/unless}}
-    </div>
 
 </div>
 
@@ -114,10 +93,10 @@
     jQuery(function ($) {
         // Consider adding an ID to your table
         // incase a second table ever enters the picture.
-        var items = $("#albums .col-md-6 .albuminfo");
+        var items = $("#albums .col-md-12 .albuminfo");
 
         var numItems = items.length;
-        var perPage = 6;
+        var perPage = 3;
 
         // Only show the first 2 (or first `per_page`) items initially.
         items.slice(perPage).hide();
@@ -170,3 +149,50 @@
 
     });
 </script>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 style="float:left" class="modal-title" id="myModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+
+                    <form class="form-horizontal" id="albumForm" method="POST" action="/searchalbums">
+                        <fieldset>
+                            <legend>Search Album by Tags Title or Theme</legend>
+
+                            <label class="control-label" for="searchtags">Album Keywords</label>
+
+                            <input type="text" style="display: inline-block" class="form-control" id="searchtags"
+                                   placeholder="Keywords"
+                                   name="searchtags" required>
+
+                            <button type="submit" form="albumForm" class="btn btn-primary">Search</button>
+                        </fieldset>
+                    </form>
+                    <br/>
+                    <form class="form-horizontal" id="pictureForm" method="POST" action="/searchphotos">
+                        <fieldset>
+                            <legend>Search Photo by Tags</legend>
+
+                            <label class="control-label" for="searchtags">Photo Keywords</label>
+
+                            <input type="text" style="display: inline-block" class="form-control" id="searchtags"
+                                   placeholder="Keywords"
+                                   name="searchtags" required>
+
+                            <button type="submit" form="pictureForm" class="btn btn-primary">Search</button>
+                        </fieldset>
+                    </form>
+                    <div class="modal-footer">
+                        <button id="close_registration" type="button" class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

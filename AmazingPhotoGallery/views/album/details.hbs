@@ -1,21 +1,44 @@
 <div class="container body-content">
     <div class="row">
+        <div class="col-md-6">
+            <header>
+                <h1>{{name}}</h1>
+            </header>
+
+            <p class="lead">Theme: {{theme}}
+            </p>
+            <p>
+                Likes: {{likes}}
+            </p>
+
+            <small style="color: darkgray;"> Made by
+                {{author.fullName}}
+            </small>
+        </div>
+
+        <div class="col-md-6">
+            <table>
+                {{#if hasRights}}
+                    <tr>
+                        <td><a class="btn btn-success tr" href="/album/addphoto/{{id}}">Add Photo</a></td>
+                        <td><a class="btn btn-danger tr" href="/album/deletephoto/{{id}}">Delete Photo</a></td>
+                    </tr>
+                    <tr class="tr">
+                        <td><a class="btn btn-success tr" href="/album/edit/{{id}}">Edit Album </a></td>
+                        <td><a class="btn btn-danger tr" href="/album/delete/{{id}}">Delete Album</a></td>
+                    </tr>
+                {{/if}}
+                <tr class="tr">
+                    <td>{{#if canLike}}<a class="btn btn-success tr" href="/album/like/{{id}}">Like</a>{{/if}}</td>
+                    {{#if canDislike}}
+                        <td><a class="btn btn-danger tr" href="/album/dislike/{{id}}">Dislike</a></td>
+                    {{/if}}
+                </tr>
+            </table>
+        </div>
+
         <div class="col-md-12">
-            <article>
-                <header>
-                    <h2>{{name}}</h2>
-                </header>
-
-                <p class="lead">{{theme}}
-                </p>
-                <p>
-                    Likes: {{likes}}
-                </p>
-
-                <small class="author">
-                    {{author.fullName}}
-                </small>
-
+            <div style="border-top: 1px solid darkgrey; margin-top: 10px;">
                 {{#if photos}}
                     <h4>Click on any photo to download it</h4>
                 {{/if}}
@@ -26,41 +49,13 @@
                 <div id="photos">
                     {{#each photos}}
                         <a href="{{path}}" download="image"><img src="{{path}}" alt="Image"
-                                                                 style="height: 200px;border: 1px solid black; border-radius: 15%"></a>
+                                                                 style="margin: 10px;height: 200px;border: 1px solid black; border-radius: 15%"></a>
                     {{/each}}
                 </div>
-
-
-                <footer>
-                    <div class="pull-right">
-                        <a class="btn btn-default btn-xs" href="/">Back &raquo;</a>
-                    </div>
-                    {{#if hasRights}}
-                        <div class="pull-right">
-                            <a class="btn btn-success btn-xs" href="/album/addphoto/{{id}}">Add Photo </a>
-                        </div>
-                        <div class="pull-right">
-                            <a class="btn btn-danger btn-xs" href="/album/deletephoto/{{id}}">Delete Photo</a>
-                        </div>
-                        <div class="pull-right">
-                            <a class="btn btn-success btn-xs" href="/album/edit/{{id}}">Edit Album </a>
-                        </div>
-                        <div class="pull-right">
-                            <a class="btn btn-danger btn-xs" href="/album/delete/{{id}}">Delete Album</a>
-                        </div>
-                    {{/if}}
-                    {{#if canLike}}
-                        <div class="pull-right">
-                            <a class="btn btn-success btn-xs" href="/album/like/{{id}}">Like</a>
-                        </div>
-                    {{/if}}
-                    {{#if canDislike}}
-                        <div class="pull-right">
-                            <a class="btn btn-danger btn-xs" href="/album/dislike/{{id}}">Dislike</a>
-                        </div>
-                    {{/if}}
-                </footer>
-            </article>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-default btn-xs" href="/">Back &raquo;</a>
+            </div>
         </div>
     </div>
 </div>

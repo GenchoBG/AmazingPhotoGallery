@@ -1,0 +1,16 @@
+#gradient
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+div .navbar:hover
+{
+    color: black;
+}
+
+.tr
+{
+    margin: 10px;
+    margin-right: 40px;
+}
